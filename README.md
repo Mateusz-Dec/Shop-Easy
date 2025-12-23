@@ -112,6 +112,12 @@ Testy pokrywają m.in. parser CSV i logikę porównywania.
 
 ---
 
+## 🚀 Demo
+
+**Live Demo**: https://shop-easy-blue.vercel.app/
+
+---
+
 ## Licencja
 
 Projekt udostępniony do celów edukacyjnych/demonstracyjnych.
