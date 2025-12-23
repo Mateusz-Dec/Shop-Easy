@@ -16,13 +16,13 @@ ShopEasy to demonstracyjna aplikacja sklepu zbudowana w React + Vite. Projekt po
 
 # Spis treści
 
-- [Funkcjonalności](#funkcjonalności)
-- [Szybki start](#szybki-start)
-- [Skrypty](#skrypty)
-- [Struktura projektu](#struktura-projektu)
-- [Dane i import](#dane-i-import)
-- [Testy](#testy)
-- [Rozwój i rozszerzenia](#rozwój-i-rozszerzenia)
+- [Funkcjonalności](#funkcjonalności-)
+- [Szybki start](#szybki-start-)
+- [Skrypty](#skrypty-ważne-)
+- [Struktura projektu](#struktura-projektu-)
+- [Dane i import](#dane-i-import-)
+- [Testy](#testy-)
+- [Rozwój i rozszerzenia](#rozwój-i-możliwe-rozszerzenia-)
 - [Licencja i wkład](#licencja-i-wkład)
 
 ---
