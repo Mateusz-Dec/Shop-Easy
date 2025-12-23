@@ -14,8 +14,6 @@ ShopEasy to demonstracyjna aplikacja sklepu zbudowana w React + Vite. Projekt po
 
 ---
 
-> **Uwaga:** Treść z `ROZSZERZENIE.md` i `ZMIANY.md` została scalona do tego pliku; pozostałe pliki `.md` zostały usunięte z repozytorium.
-
 # Spis treści
 
 - [Funkcjonalności](#funkcjonalności)
@@ -111,17 +109,6 @@ Testy pokrywają m.in. parser CSV i logikę porównywania.
 - Pełne konektory do Shopify/WooCommerce (wymaga implementacji OAuth i mapowania pól)
 - Rozszerzona walidacja CSV i obsługa różnych encodingów
 - Integracja z zewnętrznym backendem i prawdziwym systemem płatności
-
----
-
-## Wkład (Contributing)
-
-Jeśli chcesz dodać funkcję lub naprawić błąd:
-
-1. Forkuj repozytorium
-2. Stwórz branch: `feature/moja-funkcja`
-3. Napisz testy
-4. Zrób PR z opisem zmian
 
 ---
 
