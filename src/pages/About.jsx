@@ -9,14 +9,16 @@ export default function About() {
       </Link>
       <h1>O nas</h1>
       <p className="text-muted">
-        ShopEasy to prosty sklep demo stworzony jako przykład projektu. Naszym
-        celem jest pokazanie jak zbudować przyjemny interfejs, prostą integrację
-        z importami produktów oraz wygodne doświadczenie zakupowe.
+        Jesteśmy internetowym sklepem oferującym praktyczne akcesoria i
+        elektronikę użytkową. W naszym asortymencie znajdziesz słuchawki,
+        powerbanki, torby, gadżety do domu i inne przydatne produkty — starannie
+        wybrane pod kątem jakości i funkcjonalności.
       </p>
-      <h5 className="mt-4">Nasza misja</h5>
+      <h5 className="mt-4">Co oferujemy</h5>
       <p className="text-muted">
-        Dostarczać przejrzyste, responsywne i proste rozwiązania e-commerce,
-        które można rozbudowywać i integrować z zewnętrznymi systemami.
+        Szybką wysyłkę, bezpieczne płatności i prosty proces zwrotu. Stawiamy na
+        dobrą obsługę klienta i regularne promocje — wszystko po to, by zakupy
+        były wygodne i satysfakcjonujące.
       </p>
     </div>
   );

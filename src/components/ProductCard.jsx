@@ -101,23 +101,23 @@ export default function ProductCard({ product, onAdd }) {
             )}
           </div>
 
-          <div className="d-flex gap-2 w-100 mt-3">
+          <div className="d-flex flex-wrap gap-2 w-100 mt-3">
             <Link
-              className="btn btn-outline-primary"
+              className="btn btn-outline-primary flex-fill"
               to={`/product/${product.id}`}
-              style={{ flex: 1 }}
             >
               Szczegóły
             </Link>
             <button
-              className="btn btn-primary"
+              className="btn btn-primary flex-shrink-1"
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
+              style={{ minWidth: 0 }}
             >
               <FaShoppingCart /> Dodaj
             </button>
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-outline-secondary flex-shrink-1"
               onClick={() => {
                 window.dispatchEvent(
                   new CustomEvent("shopeasy-compare-add", {
@@ -132,6 +132,7 @@ export default function ProductCard({ product, onAdd }) {
                   );
                 } catch (err) {}
               }}
+              style={{ minWidth: 0 }}
             >
               Porównaj
             </button>

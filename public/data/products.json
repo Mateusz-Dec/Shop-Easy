@@ -5,7 +5,7 @@
     "price": 299.99,
     "category": "Elektronika",
     "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80",
-    "description": "Doskonały dźwięk i bateria do 20h działania.",
+    "description": "Doskonały dźwięk, wygoda i bateria do 20 godzin pracy — idealne na podróże i treningi.",
     "rating": 4.5,
     "reviews": 128,
     "stock": 15
@@ -16,7 +16,7 @@
     "price": 199.99,
     "category": "Elektronika",
     "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80",
-    "description": "Monitoruj kroki, tętno i sen.",
+    "description": "Smartwatch z funkcjami monitorowania kroków, tętna i snu — intuicyjny i energooszczędny.",
     "rating": 4.3,
     "reviews": 95,
     "stock": 22
@@ -27,7 +27,7 @@
     "price": 129.0,
     "category": "Akcesoria",
     "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
-    "description": "Elegancka torba odporna na zachlapania.",
+    "description": "Elegancka i wytrzymała torba na laptopa z wyściełaną przegrodą i ochroną przed zachlapaniem.",
     "rating": 4.7,
     "reviews": 213,
     "stock": 30
@@ -38,7 +38,7 @@
     "price": 49.99,
     "category": "Dom",
     "image": "https://images.unsplash.com/photo-1514432324607-2e467f4af590?w=800&q=80",
-    "description": "Utrzymuje temperaturę do 6 godzin.",
+    "description": "Kubek termiczny 450 ml — szczelny i wygodny, utrzymuje temperaturę napoju do 6 godzin.",
     "rating": 4.6,
     "reviews": 187,
     "stock": 50
@@ -49,7 +49,7 @@
     "price": 449.99,
     "category": "Elektronika",
     "image": "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80",
-    "description": "Nagrywaj w 4K z stabilizacją obrazu. Wodoodporna do 30m.",
+    "description": "Kamera 4K ze stabilizacją obrazu i wodoodpornością do 30 m — doskonała do nagrań z aktywności.",
     "rating": 4.8,
     "reviews": 156,
     "stock": 8
@@ -60,7 +60,7 @@
     "price": 19.99,
     "category": "Akcesoria",
     "image": "https://images.unsplash.com/photo-1625948515291-69613efd103f?w=800&q=80",
-    "description": "Szybki transfer danych i ładowanie. Wytrzymały na przegięcia.",
+    "description": "Kabel USB-C 2 m — szybkie ładowanie i transfer danych, wzmocnione końcówki odporne na zginanie.",
     "rating": 4.4,
     "reviews": 312,
     "stock": 100
@@ -71,7 +71,7 @@
     "price": 89.99,
     "category": "Akcesoria",
     "image": "https://images.unsplash.com/photo-1527621450005-cf08d157b447?w=800&q=80",
-    "description": "Ochrona UV400. Vintage design, nowoczesne funkcje.",
+    "description": "Okulary w stylu retro — pełna ochrona UV400 i lekka, trwała konstrukcja.",
     "rating": 4.2,
     "reviews": 87,
     "stock": 25
@@ -82,7 +82,7 @@
     "price": 34.99,
     "category": "Akcesoria",
     "image": "https://images.unsplash.com/photo-1527814050087-3793815479db?w=800&q=80",
-    "description": "Duża powierzchnia robocza. Komfortowa dla przedramienia.",
+    "description": "Duża podkładka dla większej wygody pracy — antypoślizgowa baza i komfort dla przedramienia.",
     "rating": 4.5,
     "reviews": 143,
     "stock": 45
@@ -93,7 +93,7 @@
     "price": 79.99,
     "category": "Dom",
     "image": "https://images.unsplash.com/photo-1565636192335-14b8d7b4e6d8?w=800&q=80",
-    "description": "RGB LED, regulacja jasności, zmiana barwy temperatury.",
+    "description": "Lampa LED z regulacją jasności i barwy oraz trybami kolorystycznymi — oszczędna i funkcjonalna.",
     "rating": 4.6,
     "reviews": 204,
     "stock": 18
@@ -104,7 +104,7 @@
     "price": 39.99,
     "category": "Dom",
     "image": "https://images.unsplash.com/photo-1514432324607-2e467f4af590?w=800&q=80",
-    "description": "Inteligentny podgrzewacz. Utrzymuje temperaturę 45-65°C.",
+    "description": "Podgrzewacz do kubka — utrzymuje optymalną temperaturę napoju, idealny do biura i domu.",
     "rating": 4.7,
     "reviews": 267,
     "stock": 35
@@ -115,7 +115,7 @@
     "price": 129.99,
     "category": "Elektronika",
     "image": "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&q=80",
-    "description": "Szybkie ładowanie, wiele portów USB. Światło LED.",
+    "description": "Powerbank 30000 mAh — szybkie ładowanie, kilka portów i solidny zapas energii w podróży.",
     "rating": 4.4,
     "reviews": 189,
     "stock": 40
@@ -126,7 +126,7 @@
     "price": 24.99,
     "category": "Akcesoria",
     "image": "https://images.unsplash.com/photo-1605559424843-9e4c3dec3106?w=800&q=80",
-    "description": "Regulowany kąt nachylenia. Antypoślizgowy materiał.",
+    "description": "Regulowany stojak na telefon — antypoślizgowy i wygodny do pracy lub rozmów wideo.",
     "rating": 4.3,
     "reviews": 156,
     "stock": 60
