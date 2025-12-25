@@ -4,10 +4,10 @@ import {
   FaArrowLeft,
   FaHeart,
   FaRegHeart,
-  FaShoppingCart,
   FaStar,
   FaRegStar,
 } from "react-icons/fa";
+import { BsCart3, BsArrowLeftRight, BsSearch } from "react-icons/bs";
 import { useCartStore } from "../store/cartStore";
 import Rating from "../components/Rating";
 import { notify } from "../lib/notify";
@@ -256,7 +256,7 @@ export default function ProductDetails() {
                   notify("Dodano produkt do porównania", "info");
                 }}
               >
-                ⚖️ Dodaj do porównania
+                <BsArrowLeftRight size={18} /> Dodaj do porównania
               </button>
 
               <button
@@ -269,7 +269,7 @@ export default function ProductDetails() {
                   )
                 }
               >
-                🔍 Powiększ zdjęcie
+                <BsSearch size={18} /> Powiększ zdjęcie
               </button>
             </div>
             <small className="text-muted d-block mb-3">
@@ -389,7 +389,7 @@ export default function ProductDetails() {
                 onClick={handleAddToCart}
                 disabled={product.stock <= 0}
               >
-                <FaShoppingCart /> Dodaj do koszyka
+                <BsCart3 /> Dodaj do koszyka
               </button>
               <button
                 className="btn btn-lg"

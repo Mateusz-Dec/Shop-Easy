@@ -1,46 +1,92 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { BsEraser } from "react-icons/bs";
 
-export default function FilterPanel({ onFilterChange, categories }) {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+export default function FilterPanel({ onFilterChange, categories = [] }) {
+  // multi-select categories (empty = all)
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [minRating, setMinRating] = useState(0);
   const [sortBy, setSortBy] = useState("rating-desc");
+  const [search, setSearch] = useState("");
+  const [onlyPromos, setOnlyPromos] = useState(false);
+  const [onlyInStock, setOnlyInStock] = useState(false);
+  const [onlyFreeShipping, setOnlyFreeShipping] = useState(false);
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-    onFilterChange({ category, priceRange, minRating, sortBy });
+  // load saved filters on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("shopeasy_filters");
+      if (raw) {
+        const s = JSON.parse(raw);
+        setSelectedCategories(s.categories || []);
+        setPriceRange(s.priceRange || [0, 500]);
+        setMinRating(s.minRating || 0);
+        setSortBy(s.sortBy || "rating-desc");
+        setSearch(s.search || "");
+        setOnlyPromos(!!s.onlyPromos);
+        setOnlyInStock(!!s.onlyInStock);
+        setOnlyFreeShipping(!!s.onlyFreeShipping);
+      }
+    } catch (err) {}
+  }, []);
+
+  // persist filters to localStorage and notify parent when changed
+  useEffect(() => {
+    const f = {
+      categories: selectedCategories,
+      priceRange,
+      minRating,
+      sortBy,
+      search,
+      onlyPromos,
+      onlyInStock,
+      onlyFreeShipping,
+    };
+    try {
+      localStorage.setItem("shopeasy_filters", JSON.stringify(f));
+    } catch (err) {}
+    onFilterChange(f);
+  }, [
+    selectedCategories,
+    priceRange,
+    minRating,
+    sortBy,
+    search,
+    onlyPromos,
+    onlyInStock,
+    onlyFreeShipping,
+  ]);
+
+  const handleCategoryToggle = (cat) => {
+    // empty array = all categories (none selected)
+    const next = selectedCategories.includes(cat)
+      ? selectedCategories.filter((c) => c !== cat)
+      : [...selectedCategories, cat];
+    setSelectedCategories(next);
   };
+
+  const handleSelectAllCategories = () => setSelectedCategories([]);
 
   const handlePriceChange = (e) => {
-    const newPrice = [0, parseInt(e.target.value)];
+    const newPrice = [0, Number(e.target.value) || 0];
     setPriceRange(newPrice);
-    onFilterChange({
-      category: selectedCategory,
-      priceRange: newPrice,
-      minRating,
-      sortBy,
-    });
   };
 
-  const handleRatingChange = (rating) => {
-    setMinRating(rating);
-    onFilterChange({
-      category: selectedCategory,
-      priceRange,
-      minRating: rating,
-      sortBy,
-    });
-  };
+  const handleRatingChange = (rating) => setMinRating(rating);
+  const handleSortChange = (e) => setSortBy(e.target.value);
 
-  const handleSortChange = (e) => {
-    const val = e.target.value;
-    setSortBy(val);
-    onFilterChange({
-      category: selectedCategory,
-      priceRange,
-      minRating,
-      sortBy: val,
-    });
+  const handleClear = () => {
+    setSelectedCategories([]);
+    setPriceRange([0, 500]);
+    setMinRating(0);
+    setSortBy("rating-desc");
+    setSearch("");
+    setOnlyPromos(false);
+    setOnlyInStock(false);
+    setOnlyFreeShipping(false);
+    try {
+      localStorage.removeItem("shopeasy_filters");
+    } catch (err) {}
   };
 
   return (
@@ -51,29 +97,46 @@ export default function FilterPanel({ onFilterChange, categories }) {
         {/* Kategorie */}
         <div className="mb-4">
           <h6 className="text-muted">Kategoria</h6>
-          <div className="btn-group-vertical w-100" role="group">
-            <button
-              type="button"
-              className={`btn btn-outline-primary text-start ${
-                selectedCategory === "all" ? "active" : ""
-              }`}
-              onClick={() => handleCategoryChange("all")}
-            >
-              Wszystkie
-            </button>
+          <div className="d-flex flex-column gap-2">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="cat_all"
+                checked={selectedCategories.length === 0}
+                onChange={handleSelectAllCategories}
+              />
+              <label className="form-check-label" htmlFor="cat_all">
+                Wszystkie
+              </label>
+            </div>
+
             {categories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                className={`btn btn-outline-primary text-start ${
-                  selectedCategory === cat ? "active" : ""
-                }`}
-                onClick={() => handleCategoryChange(cat)}
-              >
-                {cat}
-              </button>
+              <div className="form-check" key={cat}>
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`cat_${cat}`}
+                  checked={selectedCategories.includes(cat)}
+                  onChange={() => handleCategoryToggle(cat)}
+                />
+                <label className="form-check-label" htmlFor={`cat_${cat}`}>
+                  {cat}
+                </label>
+              </div>
             ))}
           </div>
+        </div>
+
+        {/* Wyszukaj */}
+        <div className="mb-3">
+          <input
+            type="search"
+            className="form-control"
+            placeholder="Szukaj produktów..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
 
         {/* Cena */}
@@ -109,6 +172,46 @@ export default function FilterPanel({ onFilterChange, categories }) {
           </div>
         </div>
 
+        {/* Dodatkowe filtry */}
+        <div className="mb-3">
+          <div className="form-check">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="promo_only"
+              checked={onlyPromos}
+              onChange={(e) => setOnlyPromos(e.target.checked)}
+            />
+            <label className="form-check-label" htmlFor="promo_only">
+              Tylko promocje
+            </label>
+          </div>
+          <div className="form-check mt-2">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="instock_only"
+              checked={onlyInStock}
+              onChange={(e) => setOnlyInStock(e.target.checked)}
+            />
+            <label className="form-check-label" htmlFor="instock_only">
+              Tylko dostępne
+            </label>
+          </div>
+          <div className="form-check mt-2">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="freeship_only"
+              checked={onlyFreeShipping}
+              onChange={(e) => setOnlyFreeShipping(e.target.checked)}
+            />
+            <label className="form-check-label" htmlFor="freeship_only">
+              Tylko darmowa wysyłka
+            </label>
+          </div>
+        </div>
+
         {/* Sortowanie */}
         <div className="mb-3">
           <h6 className="text-muted">Sortuj</h6>
@@ -123,8 +226,21 @@ export default function FilterPanel({ onFilterChange, categories }) {
             <option value="price-desc">Cena (malejąco)</option>
             <option value="az">Nazwa (A → Z)</option>
             <option value="za">Nazwa (Z → A)</option>
+            <option value="popular">Popularność</option>
             <option value="newest">Najnowsze</option>
           </select>
+        </div>
+
+        <div className="d-flex flex-wrap justify-content-between bg-white border-0 pt-0">
+          <button
+            className="btn btn-sm btn-outline-secondary"
+            onClick={handleClear}
+          >
+            Wyczyść filtry
+          </button>
+          <div className="text-muted small align-self-center">
+            Filtry są przechowywane lokalnie
+          </div>
         </div>
       </div>
     </div>

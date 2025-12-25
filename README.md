@@ -36,6 +36,13 @@ ShopEasy to demonstracyjna aplikacja sklepu zbudowana w React + Vite. Projekt po
 - Ulubione (wishlist) i powiadomienia (toast)
 - Porównywanie produktów i eksport porównania jako CSV
 - Import produktów z CSV oraz proste konektory (szkice) dla Shopify/WooCommerce
+- Rozszerzone filtry: wielokrotne wybieranie kategorii, zakres cen, minimalna ocena, wyszukiwarka tekstowa, tylko promocje, tylko dostępne oraz "tylko darmowa wysyłka" (trwałe filtry w localStorage)
+- Sortowanie: dodano sortowanie po popularności (liczba opinii)
+- Kolekcje: dedykowane sekcje Promocje i Odzież męska oraz banner promocyjny na stronie głównej
+- Szybki podgląd (Quick View): podgląd produktu w modalu bez przechodzenia na stronę produktu
+- Tryb ciemny: toggle w nagłówku, preferencja zapisywana w localStorage
+- Carousel promocji: prosty slider z aktualnymi promocjami (strona główna), z przyciskami nawigacji i prostą obsługą klawiatury
+- Przyciski i filtry: dodano przycisk "Wyczyść filtry" oraz trwałe zapisywanie filtrów (localStorage).
 
 ---
 

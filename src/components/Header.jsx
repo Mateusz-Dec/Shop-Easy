@@ -1,13 +1,35 @@
 import { Link } from "react-router-dom";
-import { FaShoppingCart, FaHeart, FaBox, FaHome } from "react-icons/fa";
+import {
+  BsCart3,
+  BsHeart,
+  BsBoxSeam,
+  BsHouseDoor,
+  BsArrowLeftRight,
+  BsPlug,
+  BsSun,
+  BsMoon,
+} from "react-icons/bs";
 import { useCartStore } from "../store/cartStore";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const cart = useCartStore((state) => state.cart);
   const favorites = useCartStore((state) => state.favorites);
   const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("shopeasy_theme") || "light"
+  );
+
+  useEffect(() => {
+    if (theme === "dark") document.documentElement.classList.add("dark");
+    else document.documentElement.classList.remove("dark");
+    try {
+      localStorage.setItem("shopeasy_theme", theme);
+    } catch (err) {}
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
     <nav
@@ -16,15 +38,16 @@ export default function Header() {
     >
       <div className="container-fluid px-4">
         <Link className="navbar-brand d-flex align-items-center gap-2" to="/">
+          <BsCart3 size={22} style={{ color: "var(--primary)" }} />
           <span
             style={{
-              fontSize: "1.3rem",
+              fontSize: "1.1rem",
               fontWeight: "800",
               letterSpacing: "-1px",
-              color: "#2c3e50",
+              color: "var(--primary)",
             }}
           >
-            🛍️ ShopEasy
+            ShopEasy
           </span>
         </Link>
 
@@ -79,8 +102,16 @@ export default function Header() {
           <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-2">
             <li className="nav-item">
               <Link className="nav-link d-flex align-items-center gap-2" to="/">
-                <FaHome size={18} />
+                <BsHouseDoor size={18} />
                 Sklep
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link d-flex align-items-center gap-2"
+                to="/collections"
+              >
+                🧾 Kolekcje
               </Link>
             </li>
             <li className="nav-item">
@@ -88,7 +119,7 @@ export default function Header() {
                 className="nav-link d-flex align-items-center gap-2 position-relative"
                 to="/wishlist"
               >
-                <FaHeart size={18} />
+                <BsHeart size={18} />
                 Ulubione
                 {favorites.length > 0 && (
                   <span
@@ -118,7 +149,7 @@ export default function Header() {
                 className="nav-link d-flex align-items-center gap-2"
                 to="/orders"
               >
-                <FaBox size={18} />
+                <BsBoxSeam size={18} />
                 Zamówienia
               </Link>
             </li>
@@ -127,7 +158,8 @@ export default function Header() {
                 className="nav-link d-flex align-items-center gap-2"
                 to="/compare"
               >
-                ⚖️ Porównaj
+                <BsArrowLeftRight size={18} />
+                Porównaj
               </Link>
             </li>
             <li className="nav-item">
@@ -135,15 +167,25 @@ export default function Header() {
                 className="nav-link d-flex align-items-center gap-2"
                 to="/integrations"
               >
-                🔌 Integracje
+                <BsPlug size={18} /> Integracje
               </Link>
+            </li>
+            <li className="nav-item">
+              <button
+                className="btn btn-sm btn-outline-secondary"
+                onClick={toggleTheme}
+                style={{ marginLeft: "0.25rem" }}
+                title="Tryb jasny/ciemny"
+                aria-pressed={theme === "dark"}
+              >
+                {theme === "dark" ? <BsMoon /> : <BsSun />}
+              </button>
             </li>
             <li className="nav-item">
               <Link
                 className="nav-link nav-btn d-flex align-items-center gap-2 position-relative"
                 to="/cart"
                 style={{
-                  background: "var(--primary)",
                   color: "white",
                   borderRadius: "6px",
                   padding: "0.5rem 1rem",
@@ -152,7 +194,7 @@ export default function Header() {
                   marginLeft: "0.5rem",
                 }}
               >
-                <FaShoppingCart size={18} />
+                <BsCart3 size={18} />
                 Koszyk
                 {cart.length > 0 && (
                   <span

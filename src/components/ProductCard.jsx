@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { FaHeart, FaRegHeart, FaShoppingCart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { BsCart3, BsEye } from "react-icons/bs";
 import { useCartStore } from "../store/cartStore";
 import Rating from "./Rating";
 import { useState } from "react";
@@ -45,7 +46,7 @@ export default function ProductCard({ product, onAdd }) {
 
   return (
     <div className="col-md-4 mb-4">
-      <div className="card border-0 shadow-sm h-100 position-relative">
+      <div className="card border-0 shadow-sm h-100 position-relative product-card">
         <div className="position-absolute top-0 end-0 p-2 z-3">
           <button
             className="btn btn-sm rounded-circle"
@@ -62,6 +63,17 @@ export default function ProductCard({ product, onAdd }) {
               <FaRegHeart size={16} style={{ color: "#666" }} />
             )}
           </button>
+        </div>
+
+        {/* Badges: promocja / nowość / darmowa wysyłka */}
+        <div className="position-absolute top-0 start-0 p-2 z-3 d-flex flex-column align-items-start gap-1">
+          {product.sale && <span className="badge bg-danger">Promocja</span>}
+          {product.isNew && <span className="badge bg-success">Nowość</span>}
+          {(product.sale && product.discountedPrice
+            ? product.discountedPrice
+            : product.price) >= 100 && (
+            <span className="badge bg-warning text-dark">Darmowa wysyłka</span>
+          )}
         </div>
 
         <img
@@ -93,7 +105,26 @@ export default function ProductCard({ product, onAdd }) {
           </p>
 
           <div className="d-flex justify-content-between align-items-center">
-            <h6 className="mb-0 text-success fw-bold">{product.price} PLN</h6>
+            <div>
+              {product.sale && product.discountedPrice ? (
+                <div>
+                  <small
+                    className="text-muted"
+                    style={{ textDecoration: "line-through" }}
+                  >
+                    {product.price} PLN
+                  </small>
+                  <div className="h6 mb-0 text-success fw-bold">
+                    {product.discountedPrice} PLN
+                  </div>
+                </div>
+              ) : (
+                <h6 className="mb-0 text-success fw-bold">
+                  {product.price} PLN
+                </h6>
+              )}
+            </div>
+
             {product.stock > 0 ? (
               <small className="text-success">Na magazynie</small>
             ) : (
@@ -109,12 +140,26 @@ export default function ProductCard({ product, onAdd }) {
               Szczegóły
             </Link>
             <button
+              className="btn btn-outline-secondary"
+              onClick={(e) => {
+                e.preventDefault();
+                window.dispatchEvent(
+                  new CustomEvent("shopeasy-open-quickview", {
+                    detail: { product },
+                  })
+                );
+              }}
+              title="Szybki podgląd"
+            >
+              <BsEye className="me-1" /> Podgląd
+            </button>
+            <button
               className="btn btn-primary flex-shrink-1"
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
               style={{ minWidth: 0 }}
             >
-              <FaShoppingCart /> Dodaj
+              <BsCart3 /> Dodaj
             </button>
             <button
               className="btn btn-outline-secondary flex-shrink-1"

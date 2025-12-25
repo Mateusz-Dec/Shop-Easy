@@ -130,5 +130,43 @@
     "rating": 4.3,
     "reviews": 156,
     "stock": 60
+  },
+  {
+    "id": 13,
+    "name": "Koszulka męska Classic",
+    "price": 59.99,
+    "category": "Odzież męska",
+    "image": "https://images.unsplash.com/photo-1520975918005-8f2f1c8ae7f3?w=800&q=80",
+    "description": "Miękka koszulka męska z bawełny, wygodny krój i trwały nadruk — idealna na co dzień.",
+    "rating": 4.2,
+    "reviews": 48,
+    "stock": 40,
+    "isNew": true
+  },
+  {
+    "id": 14,
+    "name": "Bluza męska Urban",
+    "price": 129.99,
+    "category": "Odzież męska",
+    "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=80",
+    "description": "Ciepła bluza z kapturem, miękki materiał i nowoczesny krój — teraz w promocji.",
+    "rating": 4.5,
+    "reviews": 74,
+    "stock": 20,
+    "sale": true,
+    "discountedPrice": 99.99
+  },
+  {
+    "id": 15,
+    "name": "Spodnie jogger Comfort",
+    "price": 149.99,
+    "category": "Odzież męska",
+    "image": "https://images.unsplash.com/photo-1602810310992-5b2f1fb7e3a8?w=800&q=80",
+    "description": "Spodnie dresowe typu jogger z regulacją w pasie — wygoda przez cały dzień.",
+    "rating": 4.3,
+    "reviews": 31,
+    "stock": 25,
+    "sale": true,
+    "discountedPrice": 119.99
   }
 ]

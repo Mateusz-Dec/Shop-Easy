@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import ProductCard from "../components/ProductCard";
 import FilterPanel from "../components/FilterPanel";
+import PromotionsCarousel from "../components/PromotionsCarousel";
 import { useCartStore } from "../store/cartStore";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -38,19 +39,50 @@ export default function Home() {
   useEffect(() => {
     let filtered = products;
 
-    // Filtrowanie po kategorii
-    if (filters.category !== "all") {
-      filtered = filtered.filter((p) => p.category === filters.category);
+    // Filtrowanie po kategoriach (multi-select)
+    if (filters.categories && filters.categories.length > 0) {
+      filtered = filtered.filter((p) =>
+        filters.categories.includes(p.category)
+      );
     }
 
-    // Filtrowanie po cenie
-    filtered = filtered.filter(
-      (p) =>
-        p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]
-    );
+    // Filtrowanie po cenie (uwzględniać discountedPrice jeśli jest)
+    filtered = filtered.filter((p) => {
+      const price = p.sale && p.discountedPrice ? p.discountedPrice : p.price;
+      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+    });
 
     // Filtrowanie po ocenie
     filtered = filtered.filter((p) => (p.rating || 0) >= filters.minRating);
+
+    // Filtr wyszukiwania
+    if (filters.search && filters.search.trim().length > 0) {
+      const q = filters.search.toLowerCase();
+      filtered = filtered.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q) ||
+          (p.category || "").toLowerCase().includes(q)
+      );
+    }
+
+    // Filtr promocji
+    if (filters.onlyPromos) {
+      filtered = filtered.filter((p) => p.sale === true);
+    }
+
+    // Filtr dostępności
+    if (filters.onlyInStock) {
+      filtered = filtered.filter((p) => p.stock > 0);
+    }
+
+    // Filtr darmowej wysyłki (założenie: darmowa wysyłka dla zamówień >= 100 PLN)
+    if (filters.onlyFreeShipping) {
+      filtered = filtered.filter((p) => {
+        const price = p.sale && p.discountedPrice ? p.discountedPrice : p.price;
+        return price >= 100;
+      });
+    }
 
     // Sortowanie
     switch (filters.sortBy) {
@@ -72,6 +104,9 @@ export default function Home() {
       case "rating-desc":
         filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
         break;
+      case "popular":
+        filtered.sort((a, b) => (b.reviews || 0) - (a.reviews || 0));
+        break;
       case "newest":
         filtered.sort((a, b) => b.id - a.id);
         break;
@@ -84,7 +119,9 @@ export default function Home() {
     setPage(1);
   }, [products, filters]);
 
-  const categories = [...new Set(products.map((p) => p.category))];
+  const categories = [...new Set(products.map((p) => p.category))].filter(
+    Boolean
+  );
 
   const visibleProducts = filteredProducts.slice(0, page * pageSize);
 
@@ -112,6 +149,18 @@ export default function Home() {
 
   return (
     <div className="container-fluid">
+      <div className="promo-banner mb-4 p-3 rounded d-flex justify-content-between align-items-center">
+        <div>
+          <strong>🔥 Promocje tygodnia:</strong> Sprawdź wybrane produkty w
+          obniżonych cenach i darmową wysyłką przy zamówieniach powyżej 100 PLN.
+        </div>
+        <div>
+          <a className="btn btn-outline-primary" href="/collections">
+            Zobacz kolekcje
+          </a>
+        </div>
+      </div>
+
       <div className="row">
         {/* Panel filtrów */}
         <div className="col-md-3 mb-4">

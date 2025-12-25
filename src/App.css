@@ -60,6 +60,48 @@
 }
 
 /* Text styling */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+/* slightly softer paragraph color for long descriptions */
+p {
+  color: #5b6b73;
+}
+
+/* make header links clearer on mobile collapse */
+.navbar-collapse.show {
+  background: white;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* small tweak for filter card spacing */
+.card .card-title {
+  margin-bottom: 0.75rem;
+}
+
+/* Promo banner */
+.promo-banner {
+  background: linear-gradient(90deg, #e9f6ff 0%, #f7f9fc 100%);
+  border: 1px solid #e0efff;
+  color: #1f3a57;
+}
+.promo-banner a.btn {
+  background: white;
+  border: 1px solid #cfe8ff;
+  color: var(--primary);
+  font-weight: 700;
+}
 h1,
 h2,
 h3,

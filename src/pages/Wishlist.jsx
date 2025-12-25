@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaShoppingCart, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaTrash } from "react-icons/fa";
+import { BsCart3 } from "react-icons/bs";
 import { useCartStore } from "../store/cartStore";
 import Rating from "../components/Rating";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -64,7 +65,7 @@ export default function Wishlist() {
                           } catch (e) {}
                         }}
                       >
-                        <FaShoppingCart /> Koszyk
+                        <BsCart3 /> Koszyk
                       </button>
                       <button
                         className="btn btn-sm btn-danger"

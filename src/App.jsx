@@ -17,7 +17,9 @@ import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
 import Cookies from "./pages/Cookies.jsx";
 import Compare from "./pages/Compare.jsx";
+import Collections from "./pages/Collections.jsx";
 import ImageLightbox from "./components/ImageLightbox.jsx";
+import QuickView from "./components/QuickView.jsx";
 import CompareListener from "./components/CompareListener.jsx";
 
 export default function App() {
@@ -25,6 +27,7 @@ export default function App() {
     <>
       <Header />
       <Toast />
+      <QuickView />
       <ImageLightbox />
       <CompareListener />
       <div className="container-fluid py-4">
@@ -39,6 +42,7 @@ export default function App() {
           <Route path="/integrations" element={<Integrations />} />
           <Route path="/import-history" element={<ImportHistory />} />
           <Route path="/compare" element={<Compare />} />
+          <Route path="/collections" element={<Collections />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

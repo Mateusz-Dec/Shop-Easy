@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { notify } from "../lib/notify";
-
+import { BsBook } from "react-icons/bs";
 function mapExternalItem(item, index) {
   return {
     id: Date.now() + index,
@@ -78,7 +78,8 @@ export default function Integrations() {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="mb-0">Integracje</h1>
         <Link to="/import-history" className="btn btn-sm btn-primary">
-          📚 Historia importów
+          <BsBook style={{ position: "relative", top: "-2px" }} /> Historia
+          importów
           <span className="badge bg-white text-dark ms-2">
             {importHistory.length}
           </span>
@@ -178,7 +179,7 @@ export default function Integrations() {
             </li>
           </ul>
 
-          <div className="card mt-3 p-3">
+          {/* <div className="card mt-3 p-3">
             <h6 className="mb-2">Propozycje rozbudowy</h6>
             <ul className="mb-0">
               <li>
@@ -191,7 +192,7 @@ export default function Integrations() {
               </li>
               <li>Raportowanie importów, rollback i detekcja konfliktów</li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
 
