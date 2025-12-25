@@ -24,7 +24,7 @@ ShopEasy to demonstracyjna aplikacja sklepu zbudowana w React + Vite. Projekt po
 - [Testy](#testy-)
 - [Rozwój i rozszerzenia](#rozwój-i-możliwe-rozszerzenia-)
 - [Demo](#demo)
-- [Licencja](#licencja-)
+- [Licencja](#licencja)
 
 
 ---
@@ -147,16 +147,11 @@ Testy pokrywają m.in. parser CSV i logikę porównywania.
 
 ---
 
-<<<<<<< HEAD
 <a id="demo"></a>
 
-=======
->>>>>>> 0b9f195ee3cbf21e4c31122cf3daa888ff358fc2
 ## Demo 🚀
 
 **Live Demo**: https://shop-easy-blue.vercel.app/
-
-> Jeśli link demo nie działa — uruchom projekt lokalnie (`npm install` + `npm run dev`) lub podmień adres na własny hosting/URL (np. Vercel/GitHub Pages).
 
 ---
 
@@ -164,6 +159,6 @@ Testy pokrywają m.in. parser CSV i logikę porównywania.
 
 ## Licencja
 
-Projekt udostępniony do celów edukacyjnych/demonstracyjnych. Jeżeli chcesz wykorzystać część kodu w projekcie komercyjnym, skontaktuj się z autorem lub dodaj odpowiedni plik `LICENSE` z wybraną licencją (np. MIT).
+Projekt udostępniony do celów edukacyjnych/demonstracyjnych. 
 
 ---
