@@ -170,7 +170,7 @@ export default function Header() {
                 <BsPlug size={18} /> Integracje
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <button
                 className="btn btn-sm btn-outline-secondary"
                 onClick={toggleTheme}
@@ -180,10 +180,10 @@ export default function Header() {
               >
                 {theme === "dark" ? <BsMoon /> : <BsSun />}
               </button>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
-                className="nav-link nav-btn d-flex align-items-center gap-2 position-relative"
+                className="nav-link  d-flex align-items-center gap-2 position-relative"
                 to="/cart"
                 style={{
                   color: "white",

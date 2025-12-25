@@ -27,6 +27,8 @@ ShopEasy to demonstracyjna aplikacja sklepu zbudowana w React + Vite. Projekt po
 
 ---
 
+<a id="funkcjonalnosci"></a>
+
 ## Funkcjonalności ✨
 
 - Wyświetlanie listy produktów z filtrowaniem i sortowaniem
@@ -45,6 +47,8 @@ ShopEasy to demonstracyjna aplikacja sklepu zbudowana w React + Vite. Projekt po
 - Przyciski i filtry: dodano przycisk "Wyczyść filtry" oraz trwałe zapisywanie filtrów (localStorage).
 
 ---
+
+<a id="szybki-start"></a>
 
 ## Szybki start 🚀
 
@@ -69,6 +73,8 @@ npm run preview
 
 ---
 
+<a id="skrypty"></a>
+
 ## Skrypty (ważne) 🔧
 
 - `npm run dev` — uruchamia serwer developerski (Vite)
@@ -77,6 +83,8 @@ npm run preview
 - `npm test` — uruchamia testy jednostkowe (Vitest)
 
 ---
+
+<a id="struktura-projektu"></a>
 
 ## Struktura projektu 📁
 
@@ -91,6 +99,8 @@ npm run preview
 
 ---
 
+<a id="dane-i-import"></a>
+
 ## Dane i import 📥
 
 - Produkty znajdują się w `public/data/products.json`.
@@ -98,6 +108,8 @@ npm run preview
 - Historia importów jest zapisywana w `localStorage.importHistory` i dostępna na stronie historii importów.
 
 ---
+
+<a id="testy"></a>
 
 ## Testy ✅
 
@@ -111,22 +123,42 @@ Testy pokrywają m.in. parser CSV i logikę porównywania.
 
 ---
 
+<a id="rozwoj-i-mozliwe-rozszerzenia"></a>
+
 ## Rozwój i możliwe rozszerzenia 💡
 
 - Pełne konektory do Shopify/WooCommerce (wymaga implementacji OAuth i mapowania pól)
 - Rozszerzona walidacja CSV i obsługa różnych encodingów
 - Integracja z zewnętrznym backendem i prawdziwym systemem płatności
 
+<a id="ciekawostki"></a>
+
+## Ciekawostki 🧪
+
+- **Tryb ciemny** z zapamiętaniem preferencji w `localStorage` i dopracowanymi kolorami tekstu/elementów.
+- **Szybki podgląd (Quick View)**: modal umożliwiający szybkie dodanie do koszyka bez opuszczania strony.
+- **Carousel promocji** ze wsparciem klawiatury i focusable items.
+- **Trwałe filtry**: użytkownik zachowuje ustawienia filtrów pomiędzy sesjami.
+- **CSV importer** odporny na BOM i różne separatory oraz prosta historia importów.
+- Użycie **Zustand** dla lekkiego store, prosty schemat od rozszerzeń integracyjnych.
+- Projekt stworzony jako przykład architektury SPA — łatwy do rozbudowy i integracji z backendem.
+
 ---
 
-## 🚀 Demo
+<a id="demo"></a>
+
+## Demo 🚀
 
 **Live Demo**: https://shop-easy-blue.vercel.app/
 
+> Jeśli link demo nie działa — uruchom projekt lokalnie (`npm install` + `npm run dev`) lub podmień adres na własny hosting/URL (np. Vercel/GitHub Pages).
+
 ---
+
+<a id="licencja"></a>
 
 ## Licencja
 
-Projekt udostępniony do celów edukacyjnych/demonstracyjnych.
+Projekt udostępniony do celów edukacyjnych/demonstracyjnych. Jeżeli chcesz wykorzystać część kodu w projekcie komercyjnym, skontaktuj się z autorem lub dodaj odpowiedni plik `LICENSE` z wybraną licencją (np. MIT).
 
 ---
