@@ -137,7 +137,6 @@ Testy pokrywają m.in. parser CSV i logikę porównywania.
 
 ## Ciekawostki 🧪
 
-- **Tryb ciemny** z zapamiętaniem preferencji w `localStorage` i dopracowanymi kolorami tekstu/elementów.
 - **Szybki podgląd (Quick View)**: modal umożliwiający szybkie dodanie do koszyka bez opuszczania strony.
 - **Carousel promocji** ze wsparciem klawiatury i focusable items.
 - **Trwałe filtry**: użytkownik zachowuje ustawienia filtrów pomiędzy sesjami.
