@@ -9,7 +9,7 @@ export default function Cart() {
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Link to="/" className="btn btn-outline-secondary mb-3">
         <FaArrowLeft /> Powrót do sklepu
       </Link>

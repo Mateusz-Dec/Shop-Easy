@@ -31,7 +31,7 @@ export default function Orders() {
   }, [location.state]);
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Link to="/" className="btn btn-outline-secondary mb-3">
         <FaArrowLeft /> Powrót do sklepu
       </Link>

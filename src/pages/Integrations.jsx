@@ -74,7 +74,7 @@ export default function Integrations() {
   };
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="mb-0">Integracje</h1>
         <Link to="/import-history" className="btn btn-sm btn-primary">

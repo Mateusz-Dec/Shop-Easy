@@ -183,15 +183,13 @@ export default function Header() {
             </li> */}
             <li className="nav-item">
               <Link
-                className="nav-link  d-flex align-items-center gap-2 position-relative"
+                className="nav-link d-flex align-items-center gap-2 position-relative"
                 to="/cart"
                 style={{
                   color: "white",
                   borderRadius: "6px",
                   padding: "0.5rem 1rem",
                   fontWeight: "600",
-                  marginTop: "0.5rem",
-                  marginLeft: "0.5rem",
                 }}
               >
                 <BsCart3 size={18} />

@@ -12,6 +12,11 @@
   flex: 1;
 }
 
+/* Ensure footer stays at bottom */
+footer {
+  margin-top: auto;
+}
+
 /* Nowoczesny button group */
 .btn-group {
   border-radius: 6px;

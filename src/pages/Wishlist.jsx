@@ -12,7 +12,7 @@ export default function Wishlist() {
   const addToCart = useCartStore((state) => state.addToCart);
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Link to="/" className="btn btn-outline-secondary mb-3">
         <FaArrowLeft /> Powrót do sklepu
       </Link>

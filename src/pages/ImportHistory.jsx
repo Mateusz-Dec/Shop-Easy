@@ -44,7 +44,7 @@ export default function ImportHistory() {
   );
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h1>Historia importów</h1>
         <div>

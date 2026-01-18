@@ -24,13 +24,13 @@ import CompareListener from "./components/CompareListener.jsx";
 
 export default function App() {
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Header />
       <Toast />
       <QuickView />
       <ImageLightbox />
       <CompareListener />
-      <div className="container-fluid py-4">
+      <div className="container-fluid py-4" style={{ flex: 1 }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Home />} />
@@ -52,6 +52,6 @@ export default function App() {
         </Routes>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }

@@ -213,7 +213,7 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Link to="/" className="btn btn-outline-secondary mb-3">
         <FaArrowLeft /> Powrót do sklepu
       </Link>
