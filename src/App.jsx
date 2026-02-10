@@ -18,13 +18,18 @@ import Terms from "./pages/Terms.jsx";
 import Cookies from "./pages/Cookies.jsx";
 import Compare from "./pages/Compare.jsx";
 import Collections from "./pages/Collections.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Account from "./pages/Account.jsx";
 import ImageLightbox from "./components/ImageLightbox.jsx";
 import QuickView from "./components/QuickView.jsx";
 import CompareListener from "./components/CompareListener.jsx";
 
 export default function App() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <div
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
       <Header />
       <Toast />
       <QuickView />
@@ -32,6 +37,9 @@ export default function App() {
       <CompareListener />
       <div className="container-fluid py-4" style={{ flex: 1 }}>
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/account" element={<Account />} />
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetails />} />

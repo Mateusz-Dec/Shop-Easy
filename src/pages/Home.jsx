@@ -3,6 +3,7 @@ import ProductCard from "../components/ProductCard";
 import FilterPanel from "../components/FilterPanel";
 import PromotionsCarousel from "../components/PromotionsCarousel";
 import { useCartStore } from "../store/cartStore";
+import { BsClockHistory } from "react-icons/bs";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Home() {
@@ -15,7 +16,37 @@ export default function Home() {
     sortBy: "rating-desc",
   });
 
-  // Pagination / infinite scroll
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const endOfDay = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        23,
+        59,
+        59,
+      );
+      const difference = endOfDay - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      }
+    };
+    const timer = setInterval(calculateTimeLeft, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const pageSize = 10;
   const [page, setPage] = useState(1);
   const [isFetching, setIsFetching] = useState(false);
@@ -25,11 +56,10 @@ export default function Home() {
   useEffect(() => {
     const base = fetch("/data/products.json").then((r) => r.json());
     const ext = Promise.resolve(
-      JSON.parse(localStorage.getItem("externalProducts") || "[]")
+      JSON.parse(localStorage.getItem("externalProducts") || "[]"),
     );
     Promise.all([base, ext])
       .then(([baseProducts, external]) => {
-        // Merge external (imported) products into product list
         const merged = [...baseProducts, ...external];
         setProducts(merged);
       })
@@ -39,44 +69,37 @@ export default function Home() {
   useEffect(() => {
     let filtered = products;
 
-    // Filtrowanie po kategoriach (multi-select)
     if (filters.categories && filters.categories.length > 0) {
       filtered = filtered.filter((p) =>
-        filters.categories.includes(p.category)
+        filters.categories.includes(p.category),
       );
     }
 
-    // Filtrowanie po cenie (uwzględniać discountedPrice jeśli jest)
     filtered = filtered.filter((p) => {
       const price = p.sale && p.discountedPrice ? p.discountedPrice : p.price;
       return price >= filters.priceRange[0] && price <= filters.priceRange[1];
     });
 
-    // Filtrowanie po ocenie
     filtered = filtered.filter((p) => (p.rating || 0) >= filters.minRating);
 
-    // Filtr wyszukiwania
     if (filters.search && filters.search.trim().length > 0) {
       const q = filters.search.toLowerCase();
       filtered = filtered.filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
-          (p.category || "").toLowerCase().includes(q)
+          (p.category || "").toLowerCase().includes(q),
       );
     }
 
-    // Filtr promocji
     if (filters.onlyPromos) {
       filtered = filtered.filter((p) => p.sale === true);
     }
 
-    // Filtr dostępności
     if (filters.onlyInStock) {
       filtered = filtered.filter((p) => p.stock > 0);
     }
 
-    // Filtr darmowej wysyłki (założenie: darmowa wysyłka dla zamówień >= 100 PLN)
     if (filters.onlyFreeShipping) {
       filtered = filtered.filter((p) => {
         const price = p.sale && p.discountedPrice ? p.discountedPrice : p.price;
@@ -84,7 +107,6 @@ export default function Home() {
       });
     }
 
-    // Sortowanie
     switch (filters.sortBy) {
       case "price-asc":
         filtered.sort((a, b) => a.price - b.price);
@@ -115,17 +137,15 @@ export default function Home() {
     }
 
     setFilteredProducts(filtered);
-    // reset pagination when filters change
     setPage(1);
   }, [products, filters]);
 
   const categories = [...new Set(products.map((p) => p.category))].filter(
-    Boolean
+    Boolean,
   );
 
   const visibleProducts = filteredProducts.slice(0, page * pageSize);
 
-  // Infinite scroll via IntersectionObserver
   React.useEffect(() => {
     if (!sentinelRef.current) return;
     const obs = new IntersectionObserver(
@@ -141,7 +161,7 @@ export default function Home() {
           }, 600);
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: "200px" },
     );
     obs.observe(sentinelRef.current);
     return () => obs.disconnect();
@@ -161,13 +181,35 @@ export default function Home() {
         </div>
       </div>
 
+      <div
+        className="alert alert-warning border-0 shadow-sm d-flex align-items-center justify-content-between mb-4"
+        style={{
+          background: "linear-gradient(90deg, #fff3e0 0%, #ffe0b2 100%)",
+        }}
+      >
+        <div className="d-flex align-items-center gap-3">
+          <div className="bg-white p-2 rounded-circle shadow-sm text-warning">
+            <BsClockHistory size={24} />
+          </div>
+          <div>
+            <h5 className="mb-0 fw-bold text-dark">Oferta Dnia!</h5>
+            <small className="text-dark">
+              Dodatkowe -20% na wybrane produkty kończy się za:
+            </small>
+          </div>
+        </div>
+        <div className="d-flex gap-2 fw-bold fs-4 text-dark font-monospace">
+          <span>{String(timeLeft.hours).padStart(2, "0")}</span>:
+          <span>{String(timeLeft.minutes).padStart(2, "0")}</span>:
+          <span>{String(timeLeft.seconds).padStart(2, "0")}</span>
+        </div>
+      </div>
+
       <div className="row">
-        {/* Panel filtrów */}
         <div className="col-md-3 mb-4">
           <FilterPanel onFilterChange={setFilters} categories={categories} />
         </div>
 
-        {/* Produkty */}
         <div className="col-md-9">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h2>Produkty ({filteredProducts.length})</h2>
@@ -180,7 +222,9 @@ export default function Home() {
             <>
               <div className="row">
                 {visibleProducts.map((p) => (
-                  <ProductCard key={p.id} product={p} onAdd={addToCart} />
+                  <div key={p.id} className="col-md-4 mb-4">
+                    <ProductCard product={p} />
+                  </div>
                 ))}
               </div>
 

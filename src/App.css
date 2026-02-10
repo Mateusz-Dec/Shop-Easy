@@ -156,6 +156,69 @@ p {
 
 .page-item.active .page-link {
   background: var(--primary);
-    font-size: 1.25rem;
+  font-size: 1.25rem;
+}
+
+/* Mobile responsywność */
+@media (max-width: 767px) {
+  /* Cart - responsywny layout */
+  .col-lg-8,
+  .col-lg-4 {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Podsumowanie - pełna szerokość */
+  .col-lg-4 > .card {
+    margin-top: 1rem;
+  }
+
+  /* Button sizing */
+  .btn-lg {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Integrations header */
+  .d-flex.flex-column.flex-md-row {
+    width: 100%;
+  }
+
+  .w-md-auto {
+    width: 100% !important;
+  }
+
+  /* Navbar Links - wyrównanie */
+  .navbar-nav {
+    gap: 0 !important;
+  }
+
+  .nav-link {
+    padding: 0.75rem 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+}
+
+/* Flex wrapping na mobile */
+.min-width-0 {
+  min-width: 0;
+}
+
+.w-md-auto {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .w-md-auto {
+    width: auto;
+  }
+
+  .align-md-items-center {
+    align-items: center;
+  }
+
+  .flex-md-row {
+    flex-direction: row;
   }
 }

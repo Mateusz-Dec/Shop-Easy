@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaTrash } from "react-icons/fa";
+import { BsCheckCircle } from "react-icons/bs";
 import { useCartStore } from "../store/cartStore";
 import CartItem from "../components/CartItem";
 
@@ -7,6 +8,9 @@ export default function Cart() {
   const { cart, clearCart } = useCartStore();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const freeShippingThreshold = 100;
+  const progress = Math.min((total / freeShippingThreshold) * 100, 100);
+  const missingAmount = freeShippingThreshold - total;
 
   return (
     <div className="container-fluid">
@@ -15,9 +19,40 @@ export default function Cart() {
       </Link>
 
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-lg-8">
           <div className="card border-0 shadow-sm p-4">
             <h2 className="fw-bold mb-4">Twój koszyk</h2>
+
+            {cart.length > 0 && (
+              <div className="mb-4 p-3 bg-light rounded">
+                {total >= freeShippingThreshold ? (
+                  <div className="text-success fw-bold d-flex align-items-center gap-2">
+                    <BsCheckCircle /> Świetnie! Masz darmową dostawę.
+                  </div>
+                ) : (
+                  <div className="mb-2">
+                    Brakuje Ci{" "}
+                    <strong className="text-primary">
+                      {missingAmount.toFixed(2)} PLN
+                    </strong>{" "}
+                    do darmowej dostawy!
+                  </div>
+                )}
+                <div className="progress" style={{ height: "8px" }}>
+                  <div
+                    className={`progress-bar ${total >= freeShippingThreshold ? "bg-success" : "bg-primary"}`}
+                    role="progressbar"
+                    style={{
+                      width: `${progress}%`,
+                      transition: "width 0.5s ease",
+                    }}
+                    aria-valuenow={progress}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  />
+                </div>
+              </div>
+            )}
 
             {cart.length === 0 ? (
               <div className="alert alert-info text-center">
@@ -36,8 +71,8 @@ export default function Cart() {
           </div>
         </div>
 
-        <div className="col-md-4">
-          <div className="card border-0 shadow-sm p-4 sticky-top">
+        <div className="col-lg-4">
+          <div className="card border-0 shadow-sm p-4">
             <h5 className="fw-bold mb-3">Podsumowanie</h5>
 
             <div className="d-flex justify-content-between mb-2">
@@ -46,15 +81,15 @@ export default function Cart() {
             </div>
 
             <div className="d-flex justify-content-between mb-3 border-top pt-3">
-              <span className="fs-5">Razem:</span>
-              <strong className="fs-5 text-success">
+              <span className="fs-6 fs-lg-5">Razem:</span>
+              <strong className="fs-6 fs-lg-5 text-success">
                 {total.toFixed(2)} PLN
               </strong>
             </div>
 
             <Link
               to="/checkout"
-              className="btn btn-success btn-lg w-100 mb-2"
+              className="btn btn-success w-100 mb-2"
               disabled={cart.length === 0}
             >
               Przejdź do kasy

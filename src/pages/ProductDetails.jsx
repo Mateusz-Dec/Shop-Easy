@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   FaArrowLeft,
   FaHeart,
@@ -7,20 +7,29 @@ import {
   FaStar,
   FaRegStar,
 } from "react-icons/fa";
-import { BsCart3, BsArrowLeftRight, BsSearch } from "react-icons/bs";
+import { BsCart3, BsArrowLeftRight, BsSearch, BsBell } from "react-icons/bs";
 import { useCartStore } from "../store/cartStore";
 import Rating from "../components/Rating";
+import BundleRecommendations from "../components/BundleRecommendations";
 import { notify } from "../lib/notify";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [allProducts, setAllProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [notifyEmail, setNotifyEmail] = useState("");
+  const [sendingNotify, setSendingNotify] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const addToCart = useCartStore((s) => s.addToCart);
   const toggleFavorite = useCartStore((state) => state.toggleFavorite);
+  const addViewedProduct = useCartStore((s) => s.addViewedProduct);
+
+  // Memoize allProducts to avoid infinite loops in child components
+  const memoizedProducts = useMemo(() => allProducts, [allProducts.length]);
 
   useEffect(() => {
     let mounted = true;
@@ -34,7 +43,7 @@ export default function ProductDetails() {
 
         // load locally imported external products (if any)
         const external = JSON.parse(
-          localStorage.getItem("externalProducts") || "[]"
+          localStorage.getItem("externalProducts") || "[]",
         );
 
         const combined = [...data, ...external];
@@ -45,12 +54,16 @@ export default function ProductDetails() {
         if (prod) {
           if (!mounted) return;
           setProduct(prod);
+          setAllProducts(combined);
           setNotFound(false);
           setIsFavorite(
             useCartStore
               .getState()
-              .favorites.some((p) => String(p.id) === String(id))
+              .favorites.some((p) => String(p.id) === String(id)),
           );
+
+          // Dodaj do historii przeglądania
+          addViewedProduct(prod);
 
           // compute similar products for comparison
           const similar = combined
@@ -62,7 +75,7 @@ export default function ProductDetails() {
                   prod.name &&
                   c.name
                     .toLowerCase()
-                    .includes(prod.name.toLowerCase().split(" ")[0]))
+                    .includes(prod.name.toLowerCase().split(" ")[0])),
             )
             .slice(0, 6);
 
@@ -85,8 +98,19 @@ export default function ProductDetails() {
   }, [id]);
 
   const handleAddToCart = () => {
+    const isClothing =
+      product.category &&
+      (product.category.toLowerCase().includes("cloth") ||
+        product.category.toLowerCase().includes("shirt") ||
+        product.category.toLowerCase().includes("odzież") ||
+        product.category.toLowerCase().includes("ubrania") ||
+        product.category.toLowerCase().includes("buty"));
+
+    if (isClothing && !selectedSize) {
+      return notify("Proszę wybrać rozmiar", "warn");
+    }
     for (let i = 0; i < quantity; i++) {
-      addToCart(product);
+      addToCart({ ...product, size: selectedSize });
     }
     setQuantity(1);
     try {
@@ -96,7 +120,7 @@ export default function ProductDetails() {
             message: `${product.name} dodano do koszyka`,
             type: "success",
           },
-        })
+        }),
       );
     } catch (err) {}
   };
@@ -113,9 +137,25 @@ export default function ProductDetails() {
               : `${product.name} dodano do ulubionych`,
             type: "info",
           },
-        })
+        }),
       );
     } catch (err) {}
+  };
+
+  const handleNotifyRequest = (e) => {
+    e.preventDefault();
+    if (!notifyEmail.includes("@"))
+      return notify("Podaj poprawny email", "warn");
+
+    setSendingNotify(true);
+    setTimeout(() => {
+      notify(
+        `Powiadomimy Cię na ${notifyEmail}, gdy produkt wróci!`,
+        "success",
+      );
+      setNotifyEmail("");
+      setSendingNotify(false);
+    }, 1500);
   };
 
   // comparison UI state
@@ -167,7 +207,7 @@ export default function ProductDetails() {
     const all = JSON.parse(localStorage.getItem("productReviews") || "{}");
     const list = all[String(product.id)] || [];
     const updated = list.map((r) =>
-      r.id === id ? { ...r, reported: true } : r
+      r.id === id ? { ...r, reported: true } : r,
     );
     all[String(product.id)] = updated;
     localStorage.setItem("productReviews", JSON.stringify(all));
@@ -213,14 +253,14 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="container-fluid">
-      <Link to="/" className="btn btn-outline-secondary mb-3">
+    <div className="container py-4">
+      <Link to="/" className="btn btn-outline-secondary mb-4">
         <FaArrowLeft /> Powrót do sklepu
       </Link>
 
-      <div className="card shadow-sm border-0 p-4">
-        <div className="row">
-          <div className="col-md-6 mb-4">
+      <div className="card shadow-sm border-0 p-3 p-md-4">
+        <div className="row g-4">
+          <div className="col-12 col-md-5 col-lg-6 mb-3 mb-md-0">
             <img
               src={product.image}
               className="img-fluid rounded"
@@ -235,41 +275,42 @@ export default function ProductDetails() {
                 window.dispatchEvent(
                   new CustomEvent("shopeasy-open-image", {
                     detail: { src: product.image, alt: product.name },
-                  })
+                  }),
                 )
               }
             />
           </div>
 
-          <div className="col-md-6">
+          <div className="col-12 col-md-7 col-lg-6">
             <h1 className="fw-bold mb-3">{product.name}</h1>
 
-            <div className="d-flex flex-wrap gap-2 mb-3">
+            <div className="d-grid gap-2 mb-3">
               <button
-                className="btn btn-outline-secondary"
+                className="btn btn-outline-secondary btn-sm"
                 onClick={() => {
                   window.dispatchEvent(
                     new CustomEvent("shopeasy-compare-add", {
                       detail: { product },
-                    })
+                    }),
                   );
                   notify("Dodano produkt do porównania", "info");
                 }}
               >
-                <BsArrowLeftRight size={18} /> Dodaj do porównania
+                <BsArrowLeftRight size={18} className="me-2" /> Dodaj do
+                porównania
               </button>
 
               <button
-                className="btn btn-outline-primary"
+                className="btn btn-outline-primary btn-sm"
                 onClick={() =>
                   window.dispatchEvent(
                     new CustomEvent("shopeasy-open-image", {
                       detail: { src: product.image, alt: product.name },
-                    })
+                    }),
                   )
                 }
               >
-                <BsSearch size={18} /> Powiększ zdjęcie
+                <BsSearch size={18} className="me-2" /> Powiększ zdjęcie
               </button>
             </div>
             <small className="text-muted d-block mb-3">
@@ -308,24 +349,10 @@ export default function ProductDetails() {
                             <div className="mt-1">
                               <a
                                 href={`/product/${s.id}`}
-                                className="btn btn-sm btn-outline-primary me-2"
+                                className="btn btn-sm btn-outline-primary"
                               >
                                 Szczegóły
                               </a>
-                              <span className="badge bg-secondary">
-                                {s.source
-                                  ? s.source
-                                  : localStorage.getItem("externalProducts") &&
-                                    JSON.stringify(
-                                      JSON.parse(
-                                        localStorage.getItem(
-                                          "externalProducts"
-                                        ) || "[]"
-                                      ).map((p) => p.id)
-                                    ).includes(String(s.id))
-                                  ? "Importer"
-                                  : "Sklep"}
-                              </span>
                             </div>
                           </div>
                         </div>
@@ -351,58 +378,112 @@ export default function ProductDetails() {
               </div>
             </div>
 
-            <div className="mb-4">
-              <label className="form-label">Ilość:</label>
-              <div className="input-group" style={{ maxWidth: "150px" }}>
-                <button
-                  className="btn btn-outline-secondary"
-                  type="button"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  className="form-control text-center"
-                  value={quantity}
-                  onChange={(e) =>
-                    setQuantity(Math.max(1, parseInt(e.target.value) || 1))
-                  }
-                  min="1"
-                  max={product.stock}
-                />
-                <button
-                  className="btn btn-outline-secondary"
-                  type="button"
-                  onClick={() =>
-                    setQuantity(Math.min(product.stock, quantity + 1))
-                  }
-                >
-                  +
-                </button>
-              </div>
-            </div>
+            {product.category &&
+              (product.category.includes("cloth") ||
+                product.category.includes("shirt") ||
+                product.category.includes("Odzież") ||
+                product.category.includes("Buty")) && (
+                <div className="mb-3">
+                  <label className="form-label small fw-bold">Rozmiar:</label>
+                  <div className="d-flex gap-2">
+                    {["S", "M", "L", "XL"].map((size) => (
+                      <button
+                        key={size}
+                        className={`btn btn-sm ${selectedSize === size ? "btn-dark" : "btn-outline-secondary"}`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-            <div className="d-flex gap-2">
-              <button
-                className="btn btn-primary btn-lg flex-grow-1"
-                onClick={handleAddToCart}
-                disabled={product.stock <= 0}
-              >
-                <BsCart3 /> Dodaj do koszyka
-              </button>
-              <button
-                className="btn btn-lg"
-                style={{
-                  backgroundColor: isFavorite ? "#ff6b6b" : "#e9ecef",
-                  border: "none",
-                  color: isFavorite ? "white" : "#666",
-                }}
-                onClick={handleToggleFavorite}
-              >
-                {isFavorite ? <FaHeart /> : <FaRegHeart />}
-              </button>
-            </div>
+            {product.stock > 0 ? (
+              <>
+                <div className="mb-4">
+                  <label className="form-label small">Ilość:</label>
+                  <div className="input-group" style={{ maxWidth: "140px" }}>
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    >
+                      −
+                    </button>
+                    <input
+                      type="number"
+                      className="form-control text-center"
+                      value={quantity}
+                      onChange={(e) =>
+                        setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                      }
+                      min="1"
+                      max={product.stock}
+                    />
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={() =>
+                        setQuantity(Math.min(product.stock, quantity + 1))
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div className="d-grid gap-2">
+                  <button
+                    className="btn btn-primary btn-lg"
+                    onClick={handleAddToCart}
+                    disabled={product.stock <= 0}
+                  >
+                    <BsCart3 className="me-2" /> Dodaj do koszyka
+                  </button>
+                  <button
+                    className="btn btn-lg"
+                    style={{
+                      backgroundColor: isFavorite ? "#ff6b6b" : "#e9ecef",
+                      border: "none",
+                      color: isFavorite ? "white" : "#666",
+                    }}
+                    onClick={handleToggleFavorite}
+                  >
+                    {isFavorite ? <FaHeart /> : <FaRegHeart />}{" "}
+                    {isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="card bg-light border-0 p-3 mb-3">
+                <h6 className="d-flex align-items-center gap-2 text-danger">
+                  <BsBell /> Produkt niedostępny
+                </h6>
+                <p className="small text-muted mb-2">
+                  Zostaw swój email, a damy Ci znać, gdy produkt wróci do
+                  magazynu.
+                </p>
+                <form onSubmit={handleNotifyRequest} className="d-flex gap-2">
+                  <input
+                    type="email"
+                    className="form-control form-control-sm"
+                    placeholder="Twój email..."
+                    value={notifyEmail}
+                    onChange={(e) => setNotifyEmail(e.target.value)}
+                    required
+                    disabled={sendingNotify}
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn-sm btn-secondary text-nowrap"
+                    disabled={sendingNotify}
+                  >
+                    {sendingNotify ? "Wysyłanie..." : "Powiadom mnie"}
+                  </button>
+                </form>
+              </div>
+            )}
 
             <div className="mt-5 p-3 bg-light rounded">
               <h5>Parametry produktu:</h5>
@@ -425,6 +506,15 @@ export default function ProductDetails() {
               <div className="mt-3">
                 <h5 className="mb-2">Opinie i oceny</h5>
                 <form onSubmit={saveReview} className="mb-3">
+                  <div className="mt-2 mb-3">
+                    <textarea
+                      className="form-control"
+                      placeholder="Napisz recenzję (min. 10 znaków)..."
+                      rows={3}
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                    />
+                  </div>
                   <div className="row g-2">
                     <div className="col-md-4">
                       <input
@@ -463,15 +553,6 @@ export default function ProductDetails() {
                         Dodaj opinię
                       </button>
                     </div>
-                  </div>
-                  <div className="mt-2">
-                    <textarea
-                      className="form-control mt-2"
-                      placeholder="Napisz recenzję..."
-                      rows={3}
-                      value={reviewText}
-                      onChange={(e) => setReviewText(e.target.value)}
-                    />
                   </div>
                 </form>
 
@@ -562,6 +643,14 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Bundle Section - Full Width */}
+      <div className="mt-4">
+        <BundleRecommendations
+          currentProductId={product.id}
+          allProducts={memoizedProducts}
+        />
       </div>
     </div>
   );

@@ -27,7 +27,9 @@ export default function Collections() {
         ) : (
           <div className="row">
             {promos.map((p) => (
-              <ProductCard key={p.id} product={p} onAdd={addToCart} />
+              <div key={p.id} className="col-md-4 mb-4">
+                <ProductCard product={p} />
+              </div>
             ))}
           </div>
         )}
@@ -40,7 +42,9 @@ export default function Collections() {
         ) : (
           <div className="row">
             {mens.map((p) => (
-              <ProductCard key={p.id} product={p} onAdd={addToCart} />
+              <div key={p.id} className="col-md-4 mb-4">
+                <ProductCard product={p} />
+              </div>
             ))}
           </div>
         )}

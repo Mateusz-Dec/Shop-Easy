@@ -24,7 +24,7 @@ export default function Integrations() {
   const [items, setItems] = useState([]);
   const [csvName, setCsvName] = useState("");
   const [importHistory, setImportHistory] = useState(() =>
-    JSON.parse(localStorage.getItem("importHistory") || "[]")
+    JSON.parse(localStorage.getItem("importHistory") || "[]"),
   );
   const [cwdCsvName, setCwdCsvName] = useState("");
 
@@ -50,7 +50,7 @@ export default function Integrations() {
   const importToLocal = () => {
     if (!items.length) return notify("Brak produktów do importu", "warn");
     const existing = JSON.parse(
-      localStorage.getItem("externalProducts") || "[]"
+      localStorage.getItem("externalProducts") || "[]",
     );
     const merged = [
       ...existing,
@@ -75,7 +75,7 @@ export default function Integrations() {
 
   return (
     <div className="container-fluid">
-      <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-2 mb-4">
         <h1 className="mb-0">Integracje</h1>
         <Link to="/import-history" className="btn btn-sm btn-primary">
           <BsBook style={{ position: "relative", top: "-2px" }} /> Historia
@@ -135,7 +135,7 @@ export default function Integrations() {
                     if (!rowsParsed.length)
                       return notify(
                         "Plik CSV jest pusty lub niepoprawny",
-                        "warn"
+                        "warn",
                       );
                     const headerRow = rowsParsed[0].map((h) => h.toLowerCase());
                     const dataRows = rowsParsed
@@ -144,7 +144,7 @@ export default function Integrations() {
                     const parsed = dataRows.map((row, idx) => {
                       const obj = {};
                       headerRow.forEach(
-                        (h, i) => (obj[h] = row[i] ? row[i].trim() : "")
+                        (h, i) => (obj[h] = row[i] ? row[i].trim() : ""),
                       );
                       return {
                         ...mapExternalItem(obj, idx),
@@ -217,7 +217,7 @@ export default function Integrations() {
                     window.dispatchEvent(
                       new CustomEvent("shopeasy-open-image", {
                         detail: { src: p.image, alt: p.name },
-                      })
+                      }),
                     )
                   }
                 />
@@ -233,11 +233,11 @@ export default function Integrations() {
                         className="btn btn-sm btn-outline-primary me-1"
                         onClick={() => {
                           const existing = JSON.parse(
-                            localStorage.getItem("externalProducts") || "[]"
+                            localStorage.getItem("externalProducts") || "[]",
                           );
                           localStorage.setItem(
                             "externalProducts",
-                            JSON.stringify([...existing, p])
+                            JSON.stringify([...existing, p]),
                           );
                           notify("Produkt dodany lokalnie", "success");
                         }}
@@ -249,7 +249,7 @@ export default function Integrations() {
                         onClick={() => {
                           try {
                             const cmp = JSON.parse(
-                              localStorage.getItem("shopeasy-compare") || "[]"
+                              localStorage.getItem("shopeasy-compare") || "[]",
                             );
                             const payload = cmp.length
                               ? JSON.parse(cmp)[1]
@@ -258,7 +258,7 @@ export default function Integrations() {
                           window.dispatchEvent(
                             new CustomEvent("shopeasy-compare-add", {
                               detail: { product: p },
-                            })
+                            }),
                           );
                           notify("Dodano do porównania", "info");
                         }}
@@ -299,7 +299,7 @@ export default function Integrations() {
                   onClick={() => {
                     // re-import items to externalProducts
                     const existing = JSON.parse(
-                      localStorage.getItem("externalProducts") || "[]"
+                      localStorage.getItem("externalProducts") || "[]",
                     );
                     const itemsToAdd = h.items.map((it) => ({
                       ...it,
@@ -307,7 +307,7 @@ export default function Integrations() {
                     }));
                     localStorage.setItem(
                       "externalProducts",
-                      JSON.stringify([...existing, ...itemsToAdd])
+                      JSON.stringify([...existing, ...itemsToAdd]),
                     );
                     notify("Import ponowny zakończony", "success");
                   }}
@@ -318,12 +318,12 @@ export default function Integrations() {
                   className="btn btn-sm btn-outline-danger"
                   onClick={() => {
                     const remaining = importHistory.filter(
-                      (x) => x.id !== h.id
+                      (x) => x.id !== h.id,
                     );
                     setImportHistory(remaining);
                     localStorage.setItem(
                       "importHistory",
-                      JSON.stringify(remaining)
+                      JSON.stringify(remaining),
                     );
                     notify("Wpis usunięto z historii", "info");
                   }}

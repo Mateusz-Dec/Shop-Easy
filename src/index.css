@@ -14,9 +14,9 @@
 
 body {
   background: #f5f5f5;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #2c3e50;
   min-height: 100vh;
 }
@@ -72,6 +72,7 @@ body {
   border: none;
   font-weight: 600;
   border-radius: 6px;
+  color: white !important;
 }
 
 .btn-success:hover:not(:disabled) {
@@ -121,7 +122,9 @@ body {
 .product-card {
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .product-card:hover {
@@ -130,7 +133,9 @@ body {
 }
 
 .product-card img {
-  transition: transform 0.22s ease, filter 0.22s ease;
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease;
 }
 
 .product-card img:hover {
@@ -221,6 +226,10 @@ body {
   padding: 0.35rem 0.6rem;
 }
 
+.badge.bg-success {
+  color: white !important;
+}
+
 /* Hover color for normal nav-links only (do not override nav-btn) */
 .nav-link:not(.nav-btn):hover {
   color: var(--primary) !important;
@@ -229,12 +238,6 @@ body {
 /* Cart button (nav-btn) keep text visible on hover */
 .nav-btn:hover {
   color: var(--primary) !important;
-}
-.dark * {
-  color: white !important;
-}
-.dark .form-control {
-  color: black !important;
 }
 /* Footer styling */
 footer {
@@ -345,6 +348,10 @@ footer a {
   border-left-color: var(--primary);
   color: var(--primary-dark);
 }
+.alert-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
 
 /* Responsive grid */
 .sticky-top {
@@ -353,14 +360,6 @@ footer a {
   z-index: 105;
 }
 
-/* Dark mode variables */
-.dark {
-  --primary: #4e79ff;
-  --primary-dark: #3b66cc;
-  --accent: #ff7a4b;
-  background: #0f1720;
-  color: #e6eef8;
-}
 .dark body {
   background: #071018;
   color: #dceaf9;
@@ -372,6 +371,7 @@ footer a {
   --card-bg: #0f1720;
   --text: #e6f0ff;
   --muted: #9fb3c9;
+  --border-color: rgba(255, 255, 255, 0.08);
   --primary: #66b3ff;
   --primary-dark: #4a95dd;
   --accent: #ff8b57;
@@ -381,13 +381,14 @@ footer a {
 .dark .card {
   background: var(--card-bg);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  color: var(--text);
 }
 .dark .nav-link {
   color: var(--text) !important;
 }
 .dark .navbar {
   background: rgba(10, 14, 20, 0.7) !important;
-  border-bottom-color: rgba(255, 255, 255, 0.04);
+  border-bottom-color: var(--border-color);
 }
 .dark .price {
   color: #bfe6ff;
@@ -400,19 +401,116 @@ footer a {
   border: none;
   color: #012033;
 }
+.dark .btn-primary:hover {
+  background: var(--primary-dark);
+  color: #012033;
+}
 .dark .btn-outline-primary {
   color: var(--primary);
   border-color: rgba(102, 179, 255, 0.18);
 }
+.dark .btn-outline-primary:hover {
+  background-color: var(--primary);
+  color: #012033;
+  border-color: var(--primary);
+}
+.dark .btn-secondary {
+  background-color: #34495e;
+  border-color: #34495e;
+  color: #fff;
+}
+.dark .btn-secondary:hover {
+  background-color: #2c3e50;
+  border-color: #2c3e50;
+}
 .dark .btn-outline-secondary {
   color: var(--text);
-  border-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.dark .btn-outline-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.dark .btn-outline-danger {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+.dark .btn-outline-danger:hover {
+  background-color: #ff6b6b;
+  color: #fff;
+}
+.dark .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+.dark .btn-link {
+  color: var(--primary);
 }
 .dark .badge.bg-danger {
   background: #d94b4b;
 }
 .dark .badge.bg-success {
   background: #2fa05a;
+}
+.dark .bg-light {
+  background-color: #16202a !important;
+  color: var(--text) !important;
+}
+.dark .bg-white {
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+}
+.dark .list-group-item {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+  color: var(--text);
+}
+.dark .list-group-item:hover {
+  background-color: #1a2634;
+}
+.dark .form-control,
+.dark .form-select {
+  background-color: #1a2634;
+  border-color: var(--border-color);
+  color: var(--text);
+}
+.dark .form-control:focus,
+.dark .form-select:focus {
+  background-color: #1a2634;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(102, 179, 255, 0.15);
+  color: var(--text);
+}
+.dark .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+.dark .input-group-text {
+  background-color: #16202a;
+  border-color: var(--border-color);
+  color: var(--text);
+}
+.dark .table {
+  color: var(--text);
+  border-color: var(--border-color);
+}
+.dark .table > :not(caption) > * > * {
+  background-color: transparent;
+  color: var(--text);
+  border-bottom-color: var(--border-color);
+}
+.dark footer {
+  background-color: var(--card-bg);
+  border-top-color: var(--border-color);
+  color: var(--text);
+}
+.dark .alert-info {
+  background-color: rgba(78, 121, 255, 0.15);
+  color: #bfe6ff;
+  border-left-color: var(--primary);
+}
+.dark .alert-success {
+  background-color: rgba(47, 160, 90, 0.15);
+  color: #81c784;
 }
 
 /* QuickView modal */
@@ -429,6 +527,12 @@ footer a {
 .quickview-card {
   width: 100%;
   max-width: 900px;
+}
+
+/* Promo banner */
+.promo-banner {
+  background: #e3f2fd;
+  color: #0d47a1;
 }
 
 /* Promotions carousel styles */
@@ -536,16 +640,22 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--text) !important;
+  color: var(--text);
 }
 .dark a {
-  color: var(--primary) !important;
+  color: var(--primary);
   text-decoration: underline;
 }
 .card {
-  transition: transform 0.16s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.18s ease;
 }
 .btn:focus {
   box-shadow: 0 0 0 4px rgba(102, 179, 255, 0.12);
   outline: none;
+}
+.dark .promo-banner {
+  background: rgba(78, 121, 255, 0.15);
+  color: #bfe6ff;
 }

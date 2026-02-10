@@ -41,7 +41,7 @@ export default function PromotionsCarousel({ products = [], onAdd }) {
       >
         {products.map((p) => (
           <div className="promo-item" key={p.id} tabIndex={0}>
-            <ProductCard product={p} onAdd={onAdd} />
+            <ProductCard product={p} />
           </div>
         ))}
       </div>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   BsCart3,
   BsHeart,
@@ -8,28 +8,22 @@ import {
   BsPlug,
   BsSun,
   BsMoon,
+  BsBoxArrowRight,
+  BsPerson,
 } from "react-icons/bs";
 import { useCartStore } from "../store/cartStore";
+import { useAuthStore } from "../store/authStore";
+import ThemeToggle from "../ThemeToggle";
 
 import { useState, useEffect } from "react";
 
 export default function Header() {
   const cart = useCartStore((state) => state.cart);
   const favorites = useCartStore((state) => state.favorites);
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("shopeasy_theme") || "light"
-  );
-
-  useEffect(() => {
-    if (theme === "dark") document.documentElement.classList.add("dark");
-    else document.documentElement.classList.remove("dark");
-    try {
-      localStorage.setItem("shopeasy_theme", theme);
-    } catch (err) {}
-  }, [theme]);
-
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
     <nav
@@ -111,7 +105,7 @@ export default function Header() {
                 className="nav-link d-flex align-items-center gap-2"
                 to="/collections"
               >
-                🧾 Kolekcje
+                <BsBoxSeam size={18} /> Kolekcje
               </Link>
             </li>
             <li className="nav-item">
@@ -170,27 +164,10 @@ export default function Header() {
                 <BsPlug size={18} /> Integracje
               </Link>
             </li>
-            {/* <li className="nav-item">
-              <button
-                className="btn btn-sm btn-outline-secondary"
-                onClick={toggleTheme}
-                style={{ marginLeft: "0.25rem" }}
-                title="Tryb jasny/ciemny"
-                aria-pressed={theme === "dark"}
-              >
-                {theme === "dark" ? <BsMoon /> : <BsSun />}
-              </button>
-            </li> */}
             <li className="nav-item">
               <Link
                 className="nav-link d-flex align-items-center gap-2 position-relative"
                 to="/cart"
-                style={{
-                  color: "white",
-                  borderRadius: "6px",
-                  padding: "0.5rem 1rem",
-                  fontWeight: "600",
-                }}
               >
                 <BsCart3 size={18} />
                 Koszyk
@@ -216,6 +193,38 @@ export default function Header() {
                   </span>
                 )}
               </Link>
+            </li>
+            <li className="nav-item">
+              {user ? (
+                <div className="d-flex align-items-center gap-2">
+                  <Link
+                    className="nav-link d-flex align-items-center gap-2"
+                    to="/account"
+                  >
+                    <BsPerson size={18} /> {user.name}
+                  </Link>
+                  <button
+                    className="btn btn-sm btn-outline-secondary"
+                    onClick={() => {
+                      logout();
+                      navigate("/");
+                    }}
+                    title="Wyloguj się"
+                  >
+                    <BsBoxArrowRight size={16} />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  className="nav-link d-flex align-items-center gap-2"
+                  to="/login"
+                >
+                  <BsPerson size={18} /> Logowanie
+                </Link>
+              )}
+            </li>
+            <li className="nav-item">
+              <ThemeToggle />
             </li>
           </ul>
         </div>

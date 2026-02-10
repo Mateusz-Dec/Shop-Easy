@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaArrowLeft, FaBox } from "react-icons/fa";
+import { BsCheckCircle } from "react-icons/bs";
 import { useCartStore } from "../store/cartStore";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect, useState } from "react";
@@ -21,7 +22,7 @@ export default function Orders() {
               message: "Płatność zakończona pomyślnie",
               type: "success",
             },
-          })
+          }),
         );
       } catch (err) {}
 
@@ -42,7 +43,8 @@ export default function Orders() {
         <div className="mb-4">
           <div className="alert alert-success d-flex align-items-center justify-content-between">
             <div>
-              <strong>✓ Twoje zamówienie zostało złożone.</strong>
+              <BsCheckCircle className="me-2" style={{ display: "inline" }} />
+              <strong>Twoje zamówienie zostało złożone.</strong>
               <div className="small text-muted">
                 Możesz zobaczyć szczegóły poniżej.
               </div>

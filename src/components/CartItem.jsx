@@ -8,21 +8,31 @@ export default function CartItem({ item }) {
 
   return (
     <div className="list-group-item">
-      <div className="d-flex align-items-center gap-3">
+      <div className="d-flex flex-column flex-md-row align-items-start align-md-items-center gap-3">
         <img
           src={item.image}
           alt={item.name}
-          style={{ width: 100, height: 100, objectFit: "cover" }}
+          style={{ width: 100, height: 100, objectFit: "cover", flexShrink: 0 }}
           className="rounded"
         />
-        <div className="flex-grow-1">
-          <h6 className="fw-bold mb-1">{item.name}</h6>
+        <div className="flex-grow-1 min-width-0">
+          <h6 className="fw-bold mb-1">
+            {item.name}
+            {item.size && (
+              <span
+                className="badge bg-light text-dark border ms-2"
+                style={{ fontSize: "0.7em", verticalAlign: "middle" }}
+              >
+                {item.size}
+              </span>
+            )}
+          </h6>
           <small className="text-muted d-block mb-2">{item.category}</small>
           <div className="text-success fw-bold">{item.price} PLN / szt.</div>
         </div>
 
-        <div className="d-flex align-items-center gap-2">
-          <div className="input-group" style={{ width: "120px" }}>
+        <div className="d-flex flex-column flex-md-row align-items-start align-md-items-center gap-2 w-100 w-md-auto">
+          <div className="input-group flex-shrink-0" style={{ width: "100px" }}>
             <button
               className="btn btn-sm btn-outline-secondary"
               type="button"
@@ -32,7 +42,7 @@ export default function CartItem({ item }) {
             </button>
             <input
               type="number"
-              className="form-control text-center"
+              className="form-control form-control-sm text-center"
               value={item.qty}
               onChange={(e) =>
                 updateCartQty(item.id, Math.max(1, Number(e.target.value)))
@@ -48,15 +58,18 @@ export default function CartItem({ item }) {
             </button>
           </div>
 
-          <div className="text-center" style={{ minWidth: "80px" }}>
-            <div className="fw-bold text-success">
+          <div
+            className="text-center flex-shrink-0"
+            style={{ minWidth: "70px" }}
+          >
+            <div className="fw-bold text-success fs-6">
               {(item.price * item.qty).toFixed(2)} PLN
             </div>
             <small className="text-muted">razem</small>
           </div>
 
           <button
-            className="btn btn-sm btn-outline-danger"
+            className="btn btn-sm btn-outline-danger flex-shrink-0"
             onClick={() => removeFromCart(item.id)}
             title="Usuń z koszyka"
           >

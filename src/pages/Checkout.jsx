@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
-import { useCartStore } from "../store/cartStore";
+import { useCartStore, usePromoDiscount } from "../store/cartStore";
+import { useAuthStore } from "../store/authStore";
 import { useNavigate, Link } from "react-router-dom";
+import PromoCode from "../components/PromoCode";
 
 const toastStyles = {
   success: {
@@ -54,11 +56,14 @@ export default function Checkout() {
   const cart = useCartStore((s) => s.cart);
   const addOrder = useCartStore((s) => s.addOrder);
   const clearCart = useCartStore((s) => s.clearCart);
+  const appliedPromo = useCartStore((s) => s.appliedPromo);
+  const discount = usePromoDiscount();
   const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
 
   const [form, setForm] = useState({
-    name: "",
-    email: "",
+    name: user?.name || "",
+    email: user?.email || "",
     address: "",
     city: "",
     zipCode: "",
@@ -71,8 +76,9 @@ export default function Checkout() {
   const [orderData, setOrderData] = useState(null);
 
   const total = cart.reduce((s, p) => s + p.price * p.qty, 0);
-  const shippingCost = total > 100 ? 0 : 15;
-  const finalTotal = total + shippingCost;
+  const subtotal = total - discount;
+  const shippingCost = subtotal > 100 ? 0 : 15;
+  const finalTotal = subtotal + shippingCost;
 
   const validateForm = () => {
     const newErrors = {};
@@ -150,8 +156,8 @@ export default function Checkout() {
         <style>{animationStyles}</style>
         <div className="container py-5 text-center">
           <div
+            className="bg-white"
             style={{
-              background: "white",
               borderRadius: "12px",
               padding: "3rem 2rem",
               boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
@@ -177,7 +183,7 @@ export default function Checkout() {
                 fontSize: "1.8rem",
               }}
             >
-              ✓ Zamówienie złożone!
+              Zamówienie złożone!
             </h2>
             <p
               style={{
@@ -247,13 +253,14 @@ export default function Checkout() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "rgba(0,0,0,0.35)",
-            zIndex: 1050,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 9999,
+            pointerEvents: "auto",
           }}
         >
           <div
+            className="bg-white"
             style={{
-              background: "white",
               padding: "2rem",
               borderRadius: "12px",
               display: "flex",
@@ -262,6 +269,7 @@ export default function Checkout() {
               gap: "1rem",
               minWidth: "260px",
               boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+              pointerEvents: "auto",
             }}
           >
             <div
@@ -292,23 +300,20 @@ export default function Checkout() {
           {/* Formularz */}
           <div className="col-lg-8">
             <div
+              className="bg-white"
               style={{
-                background: "white",
                 borderRadius: "12px",
                 padding: "2rem",
                 boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
               }}
             >
-              <h2 style={{ marginBottom: "1.5rem", color: "#2c3e50" }}>
+              <h2 className="mb-4" style={{ color: "inherit" }}>
                 Dane dostawy
               </h2>
 
               <div className="row g-3">
                 <div className="col-md-6">
-                  <label
-                    className="form-label"
-                    style={{ fontWeight: "600", color: "#2c3e50" }}
-                  >
+                  <label className="form-label" style={{ fontWeight: "600" }}>
                     Imię i nazwisko *
                   </label>
                   <input
@@ -335,10 +340,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-6">
-                  <label
-                    className="form-label"
-                    style={{ fontWeight: "600", color: "#2c3e50" }}
-                  >
+                  <label className="form-label" style={{ fontWeight: "600" }}>
                     Email *
                   </label>
                   <input
@@ -365,10 +367,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-6">
-                  <label
-                    className="form-label"
-                    style={{ fontWeight: "600", color: "#2c3e50" }}
-                  >
+                  <label className="form-label" style={{ fontWeight: "600" }}>
                     Numer telefonu *
                   </label>
                   <input
@@ -395,10 +394,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-6">
-                  <label
-                    className="form-label"
-                    style={{ fontWeight: "600", color: "#2c3e50" }}
-                  >
+                  <label className="form-label" style={{ fontWeight: "600" }}>
                     Adres *
                   </label>
                   <input
@@ -425,10 +421,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-6">
-                  <label
-                    className="form-label"
-                    style={{ fontWeight: "600", color: "#2c3e50" }}
-                  >
+                  <label className="form-label" style={{ fontWeight: "600" }}>
                     Miasto *
                   </label>
                   <input
@@ -455,10 +448,7 @@ export default function Checkout() {
                 </div>
 
                 <div className="col-md-6">
-                  <label
-                    className="form-label"
-                    style={{ fontWeight: "600", color: "#2c3e50" }}
-                  >
+                  <label className="form-label" style={{ fontWeight: "600" }}>
                     Kod pocztowy *
                   </label>
                   <input
@@ -505,8 +495,8 @@ export default function Checkout() {
           {/* Podsumowanie */}
           <div className="col-lg-4">
             <div
+              className="bg-white"
               style={{
-                background: "white",
                 borderRadius: "12px",
                 padding: "1.5rem",
                 boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
@@ -515,14 +505,15 @@ export default function Checkout() {
               }}
             >
               <h5
+                className="mb-4 fw-bold"
                 style={{
-                  marginBottom: "1.5rem",
-                  color: "#2c3e50",
-                  fontWeight: "700",
+                  color: "inherit",
                 }}
               >
                 Podsumowanie zamówienia
               </h5>
+
+              <PromoCode />
 
               <div
                 style={{
@@ -544,14 +535,12 @@ export default function Checkout() {
                     }}
                   >
                     <div>
-                      <div style={{ color: "#2c3e50", fontWeight: "500" }}>
-                        {item.name}
-                      </div>
-                      <small style={{ color: "#546e7a" }}>
+                      <div style={{ fontWeight: "500" }}>{item.name}</div>
+                      <small className="text-muted">
                         {item.qty}x {item.price} PLN
                       </small>
                     </div>
-                    <div style={{ color: "#2c3e50", fontWeight: "600" }}>
+                    <div style={{ fontWeight: "600" }}>
                       {(item.price * item.qty).toFixed(2)} PLN
                     </div>
                   </div>
@@ -564,12 +553,38 @@ export default function Checkout() {
                     display: "flex",
                     justifyContent: "space-between",
                     marginBottom: "0.75rem",
-                    color: "#546e7a",
                   }}
                 >
                   <span>Produkty:</span>
                   <span>{total.toFixed(2)} PLN</span>
                 </div>
+
+                {discount > 0 && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginBottom: "0.75rem",
+                      color: "#4caf50",
+                      fontWeight: "600",
+                    }}
+                  >
+                    <span>Rabat ({appliedPromo}):</span>
+                    <span>-{discount.toFixed(2)} PLN</span>
+                  </div>
+                )}
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "0.75rem",
+                  }}
+                >
+                  <span>Subtotal:</span>
+                  <span>{subtotal.toFixed(2)} PLN</span>
+                </div>
+
                 <div
                   style={{
                     display: "flex",
@@ -606,7 +621,6 @@ export default function Checkout() {
                   justifyContent: "space-between",
                   fontSize: "1.2rem",
                   fontWeight: "700",
-                  color: "#2c3e50",
                 }}
               >
                 <span>Razem:</span>
